@@ -1,0 +1,8 @@
+/* Attenuate by 10 db for 10 mix tracks */
+desc:Nix 10dB Pad
+
+/* Ratio is 10 ^ (dB / 20)              */
+
+@sample
+	spl0 *= 0.31622777;
+	spl1 *= 0.31622777;

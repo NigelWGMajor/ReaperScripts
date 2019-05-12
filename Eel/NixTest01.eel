@@ -1,0 +1,57 @@
+//font_size = 16;
+//font_name = "Verdana";
+//function init(window_w, window_h)
+//(
+//  //gfx_a = 1; gfx_r = 1; gfx_g = 1; gfx_b = 1;
+//  gfx_init("Track FX selector", window_w, window_h);
+//  gfx_setfont(1, font_name, font_size);
+//);
+
+/* Nigel Major
+   Will hide all fx on the first track except fx 2 (zero-based)
+   and toggles the fx chain window visibility.
+  
+*/
+
+function main() local(sel_track)
+( 
+  gfx_x = 10;
+  gfx_y = gfx_texth;
+
+  // Determine number of tracks.
+  trackCount = CountTracks(0); 
+  //gfx_printf("%u tracks", trackCount);
+  // Select the first track:
+  track = GetTrack(0,0);
+  // Count effects:
+  fxCount = TrackFX_GetCount(track);
+  
+  gfx_printf("%u FX", fxCount);
+  // Detect if the chain is hidden:
+  TrackFX_GetChainVisible(track) == -1 ?
+  // If so, show the chain:
+    TrackFX_Show(track, 0, 1):
+  // else hide the chain:
+    TrackFX_Show(track, 0, 0);
+  // set up an index for inside the loop:
+  item = fxCount - 1;
+  loop (fxCount, 
+    ( 
+      // detect which to show:
+      item == 2 /* + TrackFX_GetChainVisible(track) */ 
+      ?
+    // Show:
+      TrackFX_Show(track, item, 3)
+      :
+    // Hide:
+      TrackFX_Show(track, item, 2);
+      
+      item -= 1;
+      
+    )
+  );
+);
+
+// init(window_w, window_h);
+//init(220, 120);
+main();

@@ -1,0 +1,62 @@
+/* EEL program for reaScript */
+
+/* Nigel Major
+  
+   Exclusive track visiblity.
+
+   Will hide all fx on the target track except fx 0 (zero-based)
+   and hides all fx chains and all other fx on all tracks where the name ends _x.
+  
+*/
+
+function main() local()
+( 
+  /* ALTER THIS NUMBER FOR THE TARGET TRACK (ZERO-BASED): */
+  targetTrack = 8;
+  
+  // Determine number of tracks.
+  trackCount = CountTracks(0); 
+  currentTrack = 0;
+  currentProject = 0;
+  // foreach track 
+  loop (trackCount)
+  (
+		track = GetTrack(currentProject, currentTrack);
+		// hide fx chain
+		TrackFX_Show(track, 0, 0);
+		// see if track is exclusive
+		isExclusive = true; //! fix this when function exists
+		// count the fx
+		fxCount = TrackFX_GetCount(track);
+		fx = 0
+		loop (fxCount)
+		(
+			targetTrack == currentTrack ?
+			(
+				fx == 0 ?
+					TrackFX_Show(track, fx, 3)
+				:	TrackFX_Show(track, fx, 2);
+			)
+			:
+			(
+				 isExclusive ?
+				    TrackFX_Show(track, fx, 2);
+			);
+			// increment
+			fx += 1;
+		)
+		currentTrack += 1
+  )
+);
+	
+function isExclusive(name)
+(
+	str_getchar(name, -1) == 'x' ?
+	(
+	str_getChar(name -2)== '_' ?
+	result = true;
+	)
+	result = false;
+	result;
+)
+main();
